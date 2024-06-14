@@ -41,9 +41,6 @@ func (m *wlPopTokenMiddleware) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		fmt.Print("PoP token:\n")
-		printToken(wlToken)
-
 		key, err := extractCnfFromToken(wlToken)
 		if err != nil {
 			fmt.Printf("failed to extract PoP key: %v\n", err)
@@ -72,6 +69,9 @@ func (m *wlPopTokenMiddleware) Middleware(next http.Handler) http.Handler {
 			http.Error(w, "invalid PoP token", http.StatusUnauthorized)
 			return
 		}
+
+		fmt.Print("PoP token:\n")
+		printToken(popToken)
 
 		next.ServeHTTP(w, r)
 	})
